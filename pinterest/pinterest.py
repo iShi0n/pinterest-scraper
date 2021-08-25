@@ -36,7 +36,6 @@ class Pinterest:
             "rs": "typed",
             "data": json.dumps({"options": {"article": None, "appliedProductFilters": "---", "auto_correction_disabled": False, "corpus": None, "customized_rerank_type": None, "filters": None, "query": "couple anime", "query_pin_sigs": None, "redux_normalize_feed": True, "rs": "typed", "scope": "pins", "source_id": None, "no_fetch_context_on_resource": False}, "context": {}})
         }
-
         response = requests.get(
             'https://br.pinterest.com/resource/BaseSearchResource/get/?source_url=/search/pins/', params=params)
 
@@ -46,12 +45,11 @@ class Pinterest:
         images = []
 
         for result in results:
-            carousel = result["carousel_data"]
-
-            if not carousel:
+            try:
+                carousel = result["carousel_data"]
+                slots = carousel["carousel_slots"]
+            except:
                 continue
-
-            slots = carousel["carousel_slots"]
 
             for slot in slots:
                 last_resolution = list(slot["images"].keys())[-1]
